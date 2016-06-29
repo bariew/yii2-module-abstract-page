@@ -27,7 +27,7 @@ class DefaultController extends Controller
         /**
          * @var Page $model
          */
-        if (!$model = Page::getCurrentPage($url)) {
+        if (!$model = Page::childClass(true)->getCurrentPage($url)) {
             throw new \yii\web\HttpException(404, \Yii::t('modules/page', "Page not found"));
         }
 

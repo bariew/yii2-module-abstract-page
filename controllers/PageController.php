@@ -25,7 +25,8 @@ class PageController extends AbstractModelController
      */
     public function getMenu()
     {
-        return Page::findOne(['pid'=>0])->menuWidget();
+        $model = $this->findModel();
+        return $model->findOne(['pid'=>0])->menuWidget();
     }
 
     /**
@@ -34,7 +35,7 @@ class PageController extends AbstractModelController
     public function actions() 
     {
         $path = "/files/".$this->module->id."/".$this->id."/".Yii::$app->user->id;
-        return array_merge(parent::actions(), [
+        return array_merge(array_intersect_key(parent::actions(), ['update' => '', 'delete' => '']), [
             'tree-move'      => 'bariew\nodeTree\actions\TreeMoveAction',
             'tree-create'    => 'bariew\nodeTree\actions\TreeCreateAction',
             'tree-update'    => 'bariew\nodeTree\actions\TreeUpdateAction',
@@ -73,7 +74,7 @@ class PageController extends AbstractModelController
      */
     public function actionCreate($id)
     {
-        $model = new Page();
+        $model = $this->findModel();
         $model->pid = $id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', Yii::t('modules/page', 'Success'));
@@ -84,4 +85,16 @@ class PageController extends AbstractModelController
             ]);
         }
     }
+
+//    public function findModel($id = null)
+//    {
+//        if ($id === null) {
+//            return new Item();
+//        }
+//        if (($model = Item::findOne($id)) !== null) {
+//            return $model;
+//        } else {
+//            throw new NotFoundHttpException(Yii::t('modules/page', 'The requested page does not exist.'));
+//        }
+//    }
 }
