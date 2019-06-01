@@ -6,6 +6,7 @@
  */
 
 namespace bariew\pageAbstractModule\controllers;
+
 use bariew\pageAbstractModule\models\Page;
 use yii\web\Controller;
 
@@ -30,11 +31,18 @@ class DefaultController extends Controller
         if (!$model = Page::childClass(true)->getCurrentPage($url)) {
             throw new \yii\web\HttpException(404, \Yii::t('modules/page', "Page not found"));
         }
-
         if ($model->layout) {
             $this->layout = $model->layout;
         }
-
+        $this->view->title = $model->page_title;
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => strip_tags($model->page_description),
+        ]);
+        $this->view->registerMetaTag([
+            'name' => 'keywords',
+            'content' => strip_tags($model->page_keywords),
+        ]);
         return $this->render('view', compact('model'));
     }
 }

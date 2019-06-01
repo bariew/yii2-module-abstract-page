@@ -124,9 +124,7 @@ class Page extends AbstractModel
         if ($model->layout) {
             Yii::$app->controller->layout = $model->layout;
         }
-        Yii::$app->view->title = $model->page_title;
-        Yii::$app->view->registerMetaTag(['name' => 'description', 'content' => $model->page_description]);
-        Yii::$app->view->registerMetaTag(['name' => 'keywords', 'content' => $model->page_keywords]);
+
         return static::$currentPage = $model;
     }
 

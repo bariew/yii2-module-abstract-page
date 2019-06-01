@@ -19,20 +19,12 @@ use bariew\pageAbstractModule\models\Page;
 class UrlRule extends \yii\web\UrlRule
 {
     /**
-     * @var bool whether to use matching page seo tags on other modules pages
-     */
-    public $enforceSeo = false;
-
-    /**
      * @inheritdoc
      */
     public function parseRequest($manager, $request)
     {
         if (!$result = parent::parseRequest($manager, $request)) {
             return false;
-        }
-        if ($this->enforceSeo) {
-            Page::getCurrentPage($request->pathInfo); // sets seo meta tags
         }
         $manager->rules = array_filter($manager->rules, function($rule) {
             return !$rule instanceof $this;
